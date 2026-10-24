@@ -12,10 +12,10 @@ export interface NewPost {
 export function createRepository(db: Database): Repository {
     async function getAll(category: string | undefined = undefined, take: number | undefined = undefined): Promise<any> {
         return new Promise(async (resolve, reject) => {
-            let q = await db.orm.public.Post.all();
+            let q = await db.orm.public.Post.include("categoryRel").all();
 
             if(category) {
-                q = q.filter(a => a.category == category)
+                q = q;   
             }
 
             if(take) {
@@ -38,9 +38,12 @@ export function createRepository(db: Database): Repository {
         return new Promise<string>(async (resolve, reject) => {
             await db.orm.public.Post.create({
                 author: post.author,
-                category: post.category,
                 content: post.content,
-                title: post.title
+                title: post.title,
+
+                categoryRel: (relation) => relation.connect({
+                    title: post.category || ""
+                })
             });
 
             resolve("ok");

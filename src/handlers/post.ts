@@ -7,12 +7,19 @@ export function createHandlers(service: Service): Handlers {
     async function getPostsHandler(req: Request, res: Response) {
         let { category, take } = req.query;
 
-        if((!category || category.length == undefined || category.length == 0) || (!take || !Number.parseInt(take as string))) {
-            return res.status(400).json("Invalid data provided.");
+        if( (!category || category.length == undefined || category.length == 0) ) {
+            category = undefined;
+        }
+        else {
+            category = category.toString();
         }
 
-        category = category.toString();
-        take = take.toString();
+        if( (!take || !Number.parseInt(take as string)) ) {
+            take = "10";
+        }
+        else {
+            take = take.toString();
+        }
 
         if(take) {
             let take_n: number = Number.parseInt(take);

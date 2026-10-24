@@ -3,7 +3,16 @@
 model Post {
   id        Int      @id @default(autoincrement())
   title     String @unique
-  category String @default("")
   content String
   author String @default("")
+
+  categoryId Int
+  categoryRel Category @relation(fields: [categoryId], references: [id])
+}
+
+model Category {
+  id  Int @id @default(autoincrement())
+  title String  @unique
+
+  posts Post[]
 }

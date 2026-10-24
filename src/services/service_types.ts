@@ -1,5 +1,5 @@
 export interface Service {
-    getAllPosts: (category: string, take: number) => Promise<any>,
+    getAllPosts: (category: string | undefined, take: number | undefined) => Promise<any>,
     getPostById: (id: number) => Promise<any>,
     addNewPost: (title: string, content: string, author : string | undefined, category: string | undefined) => Promise<string>
 };

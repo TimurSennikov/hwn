@@ -3,7 +3,7 @@ import { Repository } from "../domain/post/repository.js";
 import { Service } from "./service_types.js"
 ;
 export function createService(repository: Repository): Service {
-    function getAllPosts(category: string, take: number) {
+    function getAllPosts(category: string | undefined, take: number | undefined) {
         return repository.getAll(category, take);
     }
 
