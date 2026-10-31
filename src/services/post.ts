@@ -11,7 +11,7 @@ export function createService(repository: Repository): Service {
         return repository.getById(id);
     }
 
-    function addNewPost(title: string, content: string, author: string | undefined, category: string | undefined) {
+    function addNewPost(title: string, content: string, author: number | undefined, category: string | undefined) {
         let post: NewPost = {
             title: title,
             content: content,
