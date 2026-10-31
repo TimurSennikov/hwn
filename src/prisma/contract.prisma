@@ -1,5 +1,13 @@
 // use prisma-8
 
+model User{
+  id  Int @id @default(autoincrement())
+  email String @unique
+  passwordHash String
+
+  posts Post[]
+}
+
 model Post {
   id        Int      @id @default(autoincrement())
   title     String @unique
@@ -8,6 +16,9 @@ model Post {
 
   categoryId Int
   categoryRel Category @relation(fields: [categoryId], references: [id])
+
+  userId Int
+  userRel User @relation(fields: [userId], references: [id])
 }
 
 model Category {

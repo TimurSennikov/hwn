@@ -6,13 +6,13 @@ export interface NewPost {
     title: string
     category: string | undefined,
     content: string,
-    author: string | undefined
+    author: number | undefined
 };
 
 export function createRepository(db: Database): Repository {
     async function getAll(category: string | undefined = undefined, take: number | undefined = undefined): Promise<any> {
         return new Promise(async (resolve, reject) => {
-            let q = await db.orm.public.Post.include("categoryRel").all();
+            let q = await db.orm.public.Post.include("categoryRel").include("userRel").all();
 
             if(category) {
                 q = q;   
@@ -28,7 +28,7 @@ export function createRepository(db: Database): Repository {
 
     async function getById(id: number): Promise<any> {
         return new Promise(async (resolve, reject) => {
-            let r = await db.orm.public.Post.where({ id: id }).all();
+            let r = await db.orm.public.Post.where({ id: id }).include("categoryRel").include("userRel").all();
 
             return r;
         });
@@ -37,13 +37,16 @@ export function createRepository(db: Database): Repository {
     async function addPost(post: NewPost) {
         return new Promise<string>(async (resolve, reject) => {
             await db.orm.public.Post.create({
-                author: post.author,
                 content: post.content,
                 title: post.title,
 
                 categoryRel: (relation) => relation.connect({
                     title: post.category || ""
-                })
+                }),
+
+                userRel: (relation) => relation.connect({
+                    id: post.author || 0
+                }),
             });
 
             resolve("ok");
